@@ -1,9 +1,4 @@
 '''
-Created on May 16, 2022
-
-@author: fbaker
-'''
-'''
 Created on Nov. 3, 2021
 
 @author: olgap
