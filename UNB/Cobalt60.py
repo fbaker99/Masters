@@ -1,11 +1,11 @@
 '''
-Created on Nov. 6, 2022
+Created on Nov. 7, 2022
 
 @author: fionabaker
 '''
 
 from scipy.integrate import solve_ivp
-import radioactivedecay as rd
+import radioactivedecay as rad
 import numpy as np
 from scipy.constants import Avogadro as NA
 import matplotlib.pyplot as plot
@@ -24,7 +24,7 @@ CROSS_SECTIONCo59 = 3.7E-23 # cm^2
 CoDensity = 8.9 #g/cm^3
 
 def CobaltProduction(Flux_CO):
-    nuc = rd.Nuclide(Cobalt)
+    nuc = rad.Nuclide(Cobalt)
     N_atomic = CoDensity * NA * ABUNDANCECo59 / nuc.atomic_mass
     macro_cross_Co = CROSS_SECTIONCo59 * N_atomic
     production_term = Flux_CO * macro_cross_Co * FLUX
@@ -33,7 +33,7 @@ def CobaltProduction(Flux_CO):
 
 def initial_decay_constant(isotope):
     # based on input isotope (iso), calcs decay constant 
-    nuc = rd.Nuclide(isotope)
+    nuc = rad.Nuclide(isotope)
     decay_const = np.log(2) / nuc.half_life('y') 
   
     if isotope == iso_list[0]:
@@ -52,8 +52,7 @@ def decay_function(t, y, k1, Flux_CO):
     return dCo60
 
 #defines a function that returns the inital the number of atoms and the decay constant for each isotope
-#uses a for loop to obtain the data at every year for 10 years
-
+#uses a for loop to obtain the activity every year for 40 years
 time = [0, 40]
 time_solutions = []
 for i in range(0, 41, 1):
@@ -72,7 +71,7 @@ solution = solve_ivp(decay_function, time, IV_y, t_eval=time_solutions,args=(k),
 
 
 #array of colors to correspond with each isotope in the isotopes list
-colours = ['mediumslateblue', 'mediumslateblue']
+colours = ['darkviolet', 'darkviolet']
 
 #for loop to plot the ODE for each isotope for the given time interval
 for answer, color in zip(solution.y, colours):

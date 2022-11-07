@@ -13,29 +13,28 @@ import matplotlib.pyplot as plot
 
 FLUX = 2e14 * 3600  # n/cm2 h
 
-ABUNDANCENi58 = 0.681
+ABUNDANCEFe54 = 0.0584
 
-iso_list = ['Co-58', 'Co-58'] #'Cr-51', 'Fe-59', 'Fe-55', 'Mn-54', 'Ni-63']
+iso_list = ['Mn-54', 'Mn-54']
 
-Nickel = 'Ni-58'
+Iron = 'Fe-54'
 
-CROSS_SECTIONNi58 = 1.46E-25 # cm^2
+CROSS_SECTIONFe54 = 2.5E-24 # cm^2
 
-NiDensity = 8.902 #g/cm^3
+FeDensity = 7.874 #g/cm^3
 
-def NickelProduction(Flux_NI):
-    nuc = rad.Nuclide(Nickel)
-    N_atomic = NiDensity * NA * ABUNDANCENi58 / nuc.atomic_mass
-    macro_cross_Ni = CROSS_SECTIONNi58 * N_atomic
-    production_term = Flux_NI * macro_cross_Ni * FLUX
+def IronProduction(Flux_FE):
+    nuc = rad.Nuclide(Iron)
+    N_atomic = FeDensity * NA * ABUNDANCEFe54 / nuc.atomic_mass
+    macro_cross_Fe = CROSS_SECTIONFe54 * N_atomic
+    production_term = Flux_FE * macro_cross_Fe * FLUX
     
     return production_term
-
 
 def initial_decay_constant(isotope):
     # based on input isotope (iso), calcs decay constant 
     nuc = rad.Nuclide(isotope)
-    decay_const = np.log(2) / nuc.half_life('d') 
+    decay_const = np.log(2) / nuc.half_life('y') 
   
     if isotope == iso_list[0]:
         input_atoms = 0
@@ -44,27 +43,22 @@ def initial_decay_constant(isotope):
     N0_atoms = input_atoms
     
     return N0_atoms, decay_const
-    print(decay_const)
 
-
-def decay_function(t, y, k1, Flux_NI):
+def decay_function(t, y, k1, Flux_FE):
    
-    P_Ni58 = NickelProduction(Flux_NI)
+    P_Fe54 = IronProduction(Flux_FE)
 
-    dCo58 = P_Ni58 - k1 * y[0]
-    return dCo58
-
+    dMn54 = P_Fe54 - k1 * y[0]
+    return dMn54
 
 #defines a function that returns the inital the number of atoms and the decay constant for each isotope
-
-#uses a for loop to obtain the data at every year for 10 years
-time = [0, 600]
+#uses a for loop to obtain the activity every year for 8 years
+time = [0, 8]
 time_solutions = []
-for i in range(0, 601, 1):
+for i in range(0, 9, 1):
     time_solutions.append(i)
     
 #the for loop is used to input the initial decay of each isotope into the empty arrays
-#uses a for loop to obtain the activity every year for 600 days
 IV_y = []
 k = []
 
@@ -77,7 +71,7 @@ solution = solve_ivp(decay_function, time, IV_y, t_eval=time_solutions,args=(k),
 
 
 #array of colors to correspond with each isotope in the isotopes list
-colours = ['mediumturquoise', 'mediumturquoise']
+colours = ['darkorange', 'darkorange']
 
 #for loop to plot the ODE for each isotope for the given time interval
 for answer, color in zip(solution.y, colours):
@@ -85,14 +79,14 @@ for answer, color in zip(solution.y, colours):
 
 #specifies the font and titles of the x and y labels
 font = {'family': 'arial', 'color': 'black', 'weight': 'normal', 'size': 12,}
-plot.xlabel('Time (days)', fontdict = font, labelpad=8)
+plot.xlabel('Time (years)', fontdict = font, labelpad=8)
 plot.ylabel('Number of Atoms/cm^3', fontdict=font, labelpad=8)
 
 #specifies the information for the legend (corresponding isotope)
-labels = ['Co-58']
+labels = ['Mn-54']
 plot.legend(labels, ncol=1, edgecolor='black', loc='best')
 plot.tick_params(axis="both",direction="in")
 
 #displays the plot and saves it as a .png file
 plot.show()
-plot.savefig('Activity_Plot_Co58.png', dpi=300)
+plot.savefig('Activity_Plot_Mn54.png', dpi=300)

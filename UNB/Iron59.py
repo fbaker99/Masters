@@ -5,7 +5,7 @@ Created on Nov. 7, 2022
 '''
 
 from scipy.integrate import solve_ivp
-import radioactivedecay as rd
+import radioactivedecay as rad
 import numpy as np
 from scipy.constants import Avogadro as NA
 import matplotlib.pyplot as plot
@@ -24,7 +24,7 @@ CROSS_SECTIONFe58 = 1.14E-24 # cm^2
 FeDensity = 7.874 #g/cm^3
 
 def IronProduction(Flux_FE):
-    nuc = rd.Nuclide(Iron)
+    nuc = rad.Nuclide(Iron)
     N_atomic = FeDensity * NA * ABUNDANCEFe58 / nuc.atomic_mass
     macro_cross_Fe = CROSS_SECTIONFe58 * N_atomic
     production_term = Flux_FE * macro_cross_Fe * FLUX
@@ -33,7 +33,7 @@ def IronProduction(Flux_FE):
 
 def initial_decay_constant(isotope):
     # based on input isotope (iso), calcs decay constant 
-    nuc = rd.Nuclide(isotope)
+    nuc = rad.Nuclide(isotope)
     decay_const = np.log(2) / nuc.half_life('d') 
   
     if isotope == iso_list[0]:
@@ -52,8 +52,7 @@ def decay_function(t, y, k1, Flux_FE):
     return dFe59
 
 #defines a function that returns the inital the number of atoms and the decay constant for each isotope
-#uses a for loop to obtain the data at every year for 10 years
-
+#uses a for loop to obtain the activity every year for 600 days
 time = [0, 600]
 time_solutions = []
 for i in range(0, 601, 1):
