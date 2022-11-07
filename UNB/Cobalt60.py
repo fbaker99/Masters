@@ -9,15 +9,15 @@ import radioactivedecay as rad
 import numpy as np
 from scipy.constants import Avogadro as NA
 import matplotlib.pyplot as plot
-from Cobalt58 import iso_list
-
+import pandas as pd
+from openpyxl import load_workbook
 
 FLUX = 2e14 * 3600  # n/cm2 h
 
 ABUNDANCECo59 = 1
 
+#the first elemment in the list will hold the intial decay consant at t = 0
 iso_list = ['Co-60', 'Co-60']
-#6.54805605e+19
 
 Cobalt = 'Co-59'
 
@@ -59,7 +59,7 @@ time = [0, 40]
 time_solutions = []
 for i in range(0, 41, 1):
     time_solutions.append(i)
-    
+   
 #the for loop is used to input the initial decay of each isotope into the empty arrays
 IV_y = []
 k = []
@@ -72,8 +72,7 @@ solution = solve_ivp(decay_function, time, IV_y, t_eval=time_solutions,args=(k),
 #uses the scipy.integrate function to calcule the ODE for each isotope
 
 #prints the ODE solution
-print('Solution to the ODE, Co-60:', solution.y[0])
-print('Solution to the ODE, Co-60:', solution.y[0])
+print('Solution to the ODE, Co-60:', np.array(solution.y[1]))
 
 #array of colors to correspond with each isotope in the isotopes list
 colours = ['darkviolet', 'darkviolet']
@@ -91,7 +90,19 @@ plot.ylabel('Number of Atoms/cm^3', fontdict=font, labelpad=8)
 labels = ['Co-60']
 plot.legend(labels, ncol=1, edgecolor='black', loc='best')
 plot.tick_params(axis="both",direction="in")
+#plot.axis([0, 40, 1e15, 1e20])
+#plot.ylim(1e15, 1e20)
 
 #displays the plot and saves it as a .png file
 plot.show()
 plot.savefig('Activity_Plot_Co60.png', dpi=300)
+
+
+
+#adds the data to an excel spreadsheet
+activity_data = np.array(solution.y[1])
+time_data = np.array(time_solutions)
+Column1 = "time"
+Column2 = "Co-60 Activity"
+data = pd.DataFrame({Column1:time_data,Column2:activity_data})
+data.to_excel('Activity.xlsx', sheet_name='Co60', index=False)

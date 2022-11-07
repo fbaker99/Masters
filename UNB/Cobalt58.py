@@ -9,7 +9,7 @@ import radioactivedecay as rad
 import numpy as np
 from scipy.constants import Avogadro as NA
 import matplotlib.pyplot as plot
-
+import pandas as pd
 
 FLUX = 2e14 * 3600  # n/cm2 h
 
@@ -96,3 +96,12 @@ plot.tick_params(axis="both",direction="in")
 #displays the plot and saves it as a .png file
 plot.show()
 plot.savefig('Activity_Plot_Co58.png', dpi=300)
+
+
+#adds the data to an excel spreadsheet
+activity_data = np.array(solution.y[1])
+time_data = np.array(time_solutions)
+Column1 = "Co-58 Activity"
+Column2 = "time"
+data = pd.DataFrame({Column1:activity_data,Column2:time_data})
+data.to_excel('Activity.xlsx', sheet_name='Co58', index=False)
