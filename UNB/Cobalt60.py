@@ -3,6 +3,7 @@ Created on Nov. 6, 2022
 
 @author: fionabaker
 '''
+
 from scipy.integrate import solve_ivp
 import radioactivedecay as rd
 import numpy as np
@@ -89,4 +90,4 @@ plot.tick_params(axis="both",direction="in")
 
 #displays the plot and saves it as a .png file
 plot.show()
-plot.savefig('Decay_Plot.png', dpi=300)
+plot.savefig('Activity_Plot_Co60.png', dpi=300)

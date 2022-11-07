@@ -1,5 +1,5 @@
 '''
-Created on Nov. 6, 2022
+Created on Nov. 7, 2022
 
 @author: fionabaker
 '''
@@ -13,24 +13,23 @@ import matplotlib.pyplot as plot
 
 FLUX = 2e14 * 3600  # n/cm2 h
 
-ABUNDANCENi58 = 0.681
+ABUNDANCECr50 = 0.0435
 
-iso_list = ['Co-58', 'Co-58'] #'Cr-51', 'Fe-59', 'Fe-55', 'Mn-54', 'Ni-63']
+iso_list = ['Cr-51', 'Cr-51']
 
-Nickel = 'Ni-58'
+Chromium = 'Cr-50'
 
-CROSS_SECTIONNi58 = 1.46E-25 # cm^2
+CROSS_SECTIONCr50 = 1.59E-23 # cm^2
 
-NiDensity = 8.902 #g/cm^3
+CrDensity = 7.19 #g/cm^3
 
-def NickelProduction(Flux_NI):
-    nuc = rd.Nuclide(Nickel)
-    N_atomic = NiDensity * NA * ABUNDANCENi58 / nuc.atomic_mass
-    macro_cross_Ni = CROSS_SECTIONNi58 * N_atomic
-    production_term = Flux_NI * macro_cross_Ni * FLUX
+def ChromiumProduction(Flux_CR):
+    nuc = rd.Nuclide(Chromium)
+    N_atomic = CrDensity * NA * ABUNDANCECr50 / nuc.atomic_mass
+    macro_cross_Cr = CROSS_SECTIONCr50 * N_atomic
+    production_term = Flux_CR * macro_cross_Cr * FLUX
     
     return production_term
-
 
 def initial_decay_constant(isotope):
     # based on input isotope (iso), calcs decay constant 
@@ -44,20 +43,17 @@ def initial_decay_constant(isotope):
     N0_atoms = input_atoms
     
     return N0_atoms, decay_const
-    print(decay_const)
 
-
-def decay_function(t, y, k1, Flux_NI):
+def decay_function(t, y, k1, Flux_CR):
    
-    P_Ni58 = NickelProduction(Flux_NI)
+    P_Cr50 = ChromiumProduction(Flux_CR)
 
-    dCo58 = P_Ni58 - k1 * y[0]
-    return dCo58
-
+    dCr51 = P_Cr50 - k1 * y[0]
+    return dCr51
 
 #defines a function that returns the inital the number of atoms and the decay constant for each isotope
-
 #uses a for loop to obtain the data at every year for 10 years
+
 time = [0, 600]
 time_solutions = []
 for i in range(0, 601, 1):
@@ -76,7 +72,7 @@ solution = solve_ivp(decay_function, time, IV_y, t_eval=time_solutions,args=(k),
 
 
 #array of colors to correspond with each isotope in the isotopes list
-colours = ['mediumturquoise', 'mediumturquoise']
+colours = ['magenta', 'magenta']
 
 #for loop to plot the ODE for each isotope for the given time interval
 for answer, color in zip(solution.y, colours):
@@ -88,10 +84,10 @@ plot.xlabel('Time (days)', fontdict = font, labelpad=8)
 plot.ylabel('Number of Atoms/cm^3', fontdict=font, labelpad=8)
 
 #specifies the information for the legend (corresponding isotope)
-labels = ['Co-58']
+labels = ['Cr-51']
 plot.legend(labels, ncol=1, edgecolor='black', loc='best')
 plot.tick_params(axis="both",direction="in")
 
 #displays the plot and saves it as a .png file
 plot.show()
-plot.savefig('Activity_Plot_Co58.png', dpi=300)
+plot.savefig('Activity_Plot_Cr51.png', dpi=300)

@@ -26,8 +26,8 @@ FeDensity = 7.874 #g/cm^3
 def IronProduction(Flux_FE):
     nuc = rd.Nuclide(Iron)
     N_atomic = FeDensity * NA * ABUNDANCEFe58 / nuc.atomic_mass
-    macro_cross_Co = CROSS_SECTIONFe58 * N_atomic
-    production_term = Flux_FE * macro_cross_Co * FLUX
+    macro_cross_Fe = CROSS_SECTIONFe58 * N_atomic
+    production_term = Flux_FE * macro_cross_Fe * FLUX
     
     return production_term
 
@@ -90,4 +90,4 @@ plot.tick_params(axis="both",direction="in")
 
 #displays the plot and saves it as a .png file
 plot.show()
-plot.savefig('Decay_Plot.png', dpi=300)
+plot.savefig('Activity_Plot_Fe59.png', dpi=300)
