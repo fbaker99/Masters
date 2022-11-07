@@ -9,6 +9,7 @@ import radioactivedecay as rad
 import numpy as np
 from scipy.constants import Avogadro as NA
 import matplotlib.pyplot as plot
+from Cobalt58 import iso_list
 
 
 FLUX = 2e14 * 3600  # n/cm2 h
@@ -16,6 +17,7 @@ FLUX = 2e14 * 3600  # n/cm2 h
 ABUNDANCECo59 = 1
 
 iso_list = ['Co-60', 'Co-60']
+#6.54805605e+19
 
 Cobalt = 'Co-59'
 
@@ -69,6 +71,9 @@ for isotope in iso_list:
 solution = solve_ivp(decay_function, time, IV_y, t_eval=time_solutions,args=(k), dense_output = True)
 #uses the scipy.integrate function to calcule the ODE for each isotope
 
+#prints the ODE solution
+print('Solution to the ODE, Co-60:', solution.y[0])
+print('Solution to the ODE, Co-60:', solution.y[0])
 
 #array of colors to correspond with each isotope in the isotopes list
 colours = ['darkviolet', 'darkviolet']
