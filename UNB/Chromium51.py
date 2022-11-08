@@ -44,6 +44,7 @@ def initial_decay_constant(isotope):
     
     return N0_atoms, decay_const
 
+
 def decay_function(t, y, k1, Flux_CR):
    
     P_Cr50 = ChromiumProduction(Flux_CR)
@@ -90,3 +91,4 @@ plot.tick_params(axis="both",direction="in")
 #displays the plot and saves it as a .png file
 plot.show()
 plot.savefig('Activity_Plot_Cr51.png', dpi=300)
+
