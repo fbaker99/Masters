@@ -10,7 +10,6 @@ import numpy as np
 from scipy.constants import Avogadro as NA
 import matplotlib.pyplot as plot
 
-
 FLUX = 2e14 * 3600  # n/cm2 h
 
 ABUNDANCEFe54 = 0.0584
@@ -53,9 +52,9 @@ def decay_function(t, y, k1, Flux_FE):
 
 #defines a function that returns the inital the number of atoms and the decay constant for each isotope
 #uses a for loop to obtain the activity every year for 8 years
-time = [0, 8]
+time = [0, 10]
 time_solutions = []
-for i in range(0, 9, 1):
+for i in range(0, 11, 1):
     time_solutions.append(i)
     
 #the for loop is used to input the initial decay of each isotope into the empty arrays

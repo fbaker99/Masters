@@ -1,5 +1,5 @@
 '''
-Created on Nov. 7, 2022
+Created on Nov. 8, 2022
 
 @author: fionabaker
 '''
@@ -9,8 +9,6 @@ import radioactivedecay as rad
 import numpy as np
 from scipy.constants import Avogadro as NA
 import matplotlib.pyplot as plot
-import pandas as pd
-from openpyxl import load_workbook
 
 FLUX = 2e14 * 3600  # n/cm2 h
 
@@ -96,13 +94,3 @@ plot.tick_params(axis="both",direction="in")
 #displays the plot and saves it as a .png file
 plot.show()
 plot.savefig('Activity_Plot_Co60.png', dpi=300)
-
-
-
-#adds the data to an excel spreadsheet
-activity_data = np.array(solution.y[1])
-time_data = np.array(time_solutions)
-Column1 = "time"
-Column2 = "Co-60 Activity"
-data = pd.DataFrame({Column1:time_data,Column2:activity_data})
-data.to_excel('Activity.xlsx', sheet_name='Co60', index=False)
