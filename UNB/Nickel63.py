@@ -11,7 +11,7 @@ from scipy.constants import Avogadro as NA
 import matplotlib.pyplot as plot
 
 
-FLUX = 2e14 * 3600  # n/cm2 h
+FLUX = 2e14  # n/cm2 s
 
 ABUNDANCENi62 = 0.0363
 
