@@ -80,7 +80,7 @@ for answer, color in zip(solution.y, colours):
 #specifies the font and titles of the x and y labels
 font = {'family': 'arial', 'color': 'black', 'weight': 'normal', 'size': 12,}
 plot.xlabel('Time (years)', fontdict = font, labelpad=8)
-plot.ylabel('Number of Atoms/cm^3', fontdict=font, labelpad=8)
+plot.ylabel('Number of Atoms', fontdict=font, labelpad=8)
 
 #specifies the information for the legend (corresponding isotope)
 labels = ['Fe-55']
