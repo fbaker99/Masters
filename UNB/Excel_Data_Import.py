@@ -4,6 +4,9 @@ Created on Nov. 7, 2022
 @author: fionabaker
 '''
 
+#this module plots all the activities
+#this module obtains the ODE data and exports it to an excel file
+
 import Cobalt60 as Co60
 import Cobalt58 as Co58
 import Iron59 as Fe59
