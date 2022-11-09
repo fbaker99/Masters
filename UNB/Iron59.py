@@ -23,6 +23,7 @@ CROSS_SECTIONFe58 = 1.14E-24 # cm^2
 
 FeDensity = 7.874 #g/cm^3
 
+
 def IronProduction(Flux_FE):
     nuc = rad.Nuclide(Iron)
     N_atomic = FeDensity * NA * ABUNDANCEFe58 / nuc.atomic_mass
@@ -32,17 +33,13 @@ def IronProduction(Flux_FE):
     return production_term
 
 def initial_decay_constant(isotope):
-    # based on input isotope (iso), calcs decay constant 
+    #calculates the initial number of atoms (0) and the decay constant 
     nuc = rad.Nuclide(isotope)
-    decay_const = np.log(2) / nuc.half_life('d') 
-  
-    if isotope == iso_list[0]:
-        input_atoms = 0
-    else:
-        input_atoms = 0     
-    N0_atoms = input_atoms
+    decay_constant = np.log(2) / nuc.half_life('d')     
+    N0_atoms = 0
     
-    return N0_atoms, decay_const
+    return N0_atoms, decay_constant
+
 
 def decay_function(t, y, k1, Flux_FE):
    

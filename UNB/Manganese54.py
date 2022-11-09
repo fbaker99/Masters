@@ -22,6 +22,7 @@ CROSS_SECTIONFe54 = 2.5E-24 # cm^2
 
 FeDensity = 7.874 #g/cm^3
 
+
 def IronProduction(Flux_FE):
     nuc = rad.Nuclide(Iron)
     N_atomic = FeDensity * NA * ABUNDANCEFe54 / nuc.atomic_mass
@@ -30,18 +31,15 @@ def IronProduction(Flux_FE):
     
     return production_term
 
+
 def initial_decay_constant(isotope):
-    # based on input isotope (iso), calcs decay constant 
+    #calculates the initial number of atoms (0) and the decay constant 
     nuc = rad.Nuclide(isotope)
-    decay_const = np.log(2) / nuc.half_life('y') 
-  
-    if isotope == iso_list[0]:
-        input_atoms = 0
-    else:
-        input_atoms = 0     
-    N0_atoms = input_atoms
+    decay_constant = np.log(2) / nuc.half_life('y') 
+    N0_atoms = 0
     
-    return N0_atoms, decay_const
+    return N0_atoms, decay_constant
+
 
 def decay_function(t, y, k1, Flux_FE):
    
@@ -85,6 +83,7 @@ plot.ylabel('Number of Atoms', fontdict=font, labelpad=8)
 labels = ['Mn-54']
 plot.legend(labels, ncol=1, edgecolor='black', loc='best')
 plot.tick_params(axis="both",direction="in")
+
 
 #displays the plot and saves it as a .png file
 plot.show()

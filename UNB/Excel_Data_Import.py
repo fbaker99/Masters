@@ -56,8 +56,3 @@ with pd.ExcelWriter('Activity.xlsx') as writer:
     Mn54_data.to_excel(writer, sheet_name='Mn54', index=False)
     Cr51_data.to_excel(writer, sheet_name='Cr51', index=False)
     Ni63_data.to_excel(writer, sheet_name='Ni63', index=False)
-    
-
-    
-
-

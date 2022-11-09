@@ -23,6 +23,7 @@ CROSS_SECTIONCo59 = 3.7E-23 # cm^2
 
 CoDensity = 8.9 #g/cm^3
 
+
 def CobaltProduction(Flux_CO):
     nuc = rad.Nuclide(Cobalt)
     N_atomic = CoDensity * NA * ABUNDANCECo59 / nuc.atomic_mass
@@ -32,17 +33,13 @@ def CobaltProduction(Flux_CO):
     return production_term
 
 def initial_decay_constant(isotope):
-    # based on input isotope (iso), calcs decay constant 
+    #calculates the initial number of atoms (0) and the decay constant 
     nuc = rad.Nuclide(isotope)
-    decay_const = np.log(2) / nuc.half_life('y') 
-  
-    if isotope == iso_list[0]:
-        input_atoms = 0
-    else:
-        input_atoms = 0     
-    N0_atoms = input_atoms
+    decay_constant = np.log(2) / nuc.half_life('y') 
+    N0_atoms = 0
     
-    return N0_atoms, decay_const
+    return N0_atoms, decay_constant
+
 
 def decay_function(t, y, k1, Flux_CO):
    
@@ -50,6 +47,7 @@ def decay_function(t, y, k1, Flux_CO):
 
     dCo60 = P_Co59 - k1 * y[0]
     return dCo60
+
 
 #defines a function that returns the inital the number of atoms and the decay constant for each isotope
 #uses a for loop to obtain the activity every year for 40 years
@@ -88,8 +86,7 @@ plot.ylabel('Number of Atoms', fontdict=font, labelpad=8)
 labels = ['Co-60']
 plot.legend(labels, ncol=1, edgecolor='black', loc='best')
 plot.tick_params(axis="both",direction="in")
-#plot.axis([0, 40, 1e15, 1e20])
-#plot.ylim(1e15, 1e20)
+
 
 #displays the plot and saves it as a .png file
 plot.show()

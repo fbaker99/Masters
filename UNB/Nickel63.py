@@ -23,6 +23,7 @@ CROSS_SECTIONNi62 = 1.46E-23 # cm^2
 
 NiDensity = 8.902 #g/cm^3
 
+
 def NickelProduction(Flux_NI):
     nuc = rad.Nuclide(Nickel)
     N_atomic = NiDensity * NA * ABUNDANCENi62 / nuc.atomic_mass
@@ -33,19 +34,12 @@ def NickelProduction(Flux_NI):
 
 
 def initial_decay_constant(isotope):
-    # based on input isotope (iso), calcs decay constant 
+    #calculates the initial number of atoms (0) and the decay constant 
     nuc = rad.Nuclide(isotope)
-    decay_const = np.log(2) / nuc.half_life('y') 
-  
-    if isotope == iso_list[0]:
-        input_atoms = 0
-    else:
-        input_atoms = 0     
-    N0_atoms = input_atoms
+    decay_constant = np.log(2) / nuc.half_life('y')    
+    N0_atoms = 0
     
-    return N0_atoms, decay_const
-    print(decay_const)
-
+    return N0_atoms, decay_constant
 
 def decay_function(t, y, k1, Flux_NI):
    
