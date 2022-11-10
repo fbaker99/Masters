@@ -88,7 +88,7 @@ plot.legend(labels, ncol=1, edgecolor='black', loc='best')
 plot.tick_params(axis="both",direction="in")
 
 #specifies the error bars
-plot.errorbar(solution.t, solution.y[1], xerr = 1, yerr = 1E11, fmt = '.') 
+#plot.errorbar(solution.t, solution.y[1], xerr = 1, yerr = 1E11, fmt = '.') 
 
 #displays the plot and saves it as a .png file
 plot.show()
