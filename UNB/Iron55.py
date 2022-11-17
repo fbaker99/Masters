@@ -50,9 +50,9 @@ def decay_function(t, y, k1, Flux_FE):
 
 #defines a function that returns the inital the number of atoms and the decay constant for each isotope
 #uses a for loop to obtain the activity every year for 600 days
-time = [0, 20]
+time = [0, 25]
 time_solutions = []
-for i in range(0, 21, 1):
+for i in range(0, 26, 1):
     time_solutions.append(i)
     
 #the for loop is used to input the initial decay of each isotope into the empty arrays
@@ -88,3 +88,10 @@ plot.tick_params(axis="both",direction="in")
 #displays the plot and saves it as a .png file
 plot.show()
 plot.savefig('Activity_Plot_Fe55.png', dpi=300)
+
+
+
+nuc4 = rad.Nuclide('Fe-59')
+print(nuc4.half_life('d'))
+nuc5 = rad.Nuclide('Fe-55')
+print(nuc5.half_life('y'))

@@ -23,7 +23,7 @@ CROSS_SECTIONCo59 = 3.7E-23 # cm^2
 
 CoDensity = 8.9 #g/cm^3
 
-
+#defines a function that calulates the production term
 def CobaltProduction(Flux_CO):
     nuc = rad.Nuclide(Cobalt)
     N_atomic = CoDensity * NA * ABUNDANCECo59 / nuc.atomic_mass
@@ -32,8 +32,9 @@ def CobaltProduction(Flux_CO):
     
     return production_term
 
+
+#defines a function that returns the inital the number of atoms and the decay constant for each isotope
 def initial_decay_constant(isotope):
-    #calculates the initial number of atoms (0) and the decay constant 
     nuc = rad.Nuclide(isotope)
     decay_constant = np.log(2) / nuc.half_life('y') 
     N0_atoms = 0
@@ -49,7 +50,6 @@ def decay_function(t, y, k1, Flux_CO):
     return dCo60
 
 
-#defines a function that returns the inital the number of atoms and the decay constant for each isotope
 #uses a for loop to obtain the activity every year for 40 years
 time = [0, 40]
 time_solutions = []
