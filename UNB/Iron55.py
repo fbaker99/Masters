@@ -3,6 +3,7 @@ Created on Nov. 7, 2022
 
 @author: fionabaker
 '''
+#making changes so they show up
 
 from scipy.integrate import solve_ivp
 import radioactivedecay as rad
