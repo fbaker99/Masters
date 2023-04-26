@@ -1,10 +1,11 @@
 '''
-Created on Mar. 23, 2023
+Created on April. 24, 2023
 
 @author: fionabaker
 '''
 
 import math
+import numpy as np
 
 class SteamGenerator:
     def __init__(self, lengths, nodes, diameters, velocities):
@@ -27,13 +28,30 @@ class SteamGenerator:
         d2 = [section["inlet piping diameter"] * section["inlet piping diameter"] for section in sections]
         return d2
     
-    def area(self, pi4):
+    def area(self):
         section = self.diameter_squared()
         area = []
         multiplier = math.pi/4
         for i in section:
             area.append(i*multiplier)
-        return area   
+        return area
+    
+
+#Function that calculate sthe Archard Equation
+def archard_equation(k, L, A, F):
+    V = []
+    tube = SteamGenerator(lengths, nodes, diameters, velocities)
+    for A in tube.area():
+        V.append(k * A * L / F)
+    return (V)
+
+#Function that calculate sthe Archard Equation
+def archard(k, D, H, F):
+    W = []
+    tube = SteamGenerator(lengths, nodes, diameters, velocities)
+    for D in tube.nodes:
+        W.append(F * k * D / H)
+    return W
 
 #from GID line 23    
 diameters = [44.3, 50, 106, 5.68, 5.68, 5.68, 5.68]
@@ -41,73 +59,40 @@ velocities = [1530, 1200, 270, 985, 985, 985, 985]
 lengths = [477.6, 281.8, 78.6, 350, 350, 350, 350]
 nodes = [477.6, 281.8, 78.6, 350, 350, 350, 350]
 
-tube = SteamGenerator(lengths, nodes, diameters, velocities)
-sections = tube.separate_by_nodes()
-print(sections)
-
-tube1 = SteamGenerator(lengths, nodes, diameters, velocities)
-section1 = tube1.diameter_squared()
-print(section1)
-
-tube2 = SteamGenerator(lengths, nodes, diameters, velocities)
-section2 = tube2.area(3)
-print(section2)
-
-# Constants
-HARDNESS_STELLITE = 490  # Vickers hardness number for Stellite 6 Alloy
-WEAR_COEFFICIENT = 5e-4 #mm/Nm, Wear Characteristic of Stellite 6 Alloy
-# Example usage
-pressure = 500  # MPa
-sliding_distance = 1e-3  # m
-
-#Calculates wear volume of Stellite 6 using Archard equation
-def archard_equation_stellite(pressure, sliding_distance):
-    wear_volume = (WEAR_COEFFICIENT * pressure * sliding_distance) / HARDNESS_STELLITE
-    return wear_volume
-
-wear_volume = archard_equation_stellite(pressure, sliding_distance)
-print("Wear volume for Stellite: {:.2e} m^3".format(wear_volume))
-
-#Calculates wear volume of Stellite 6 using Archard equation
-# f: wear coefficient
-# L: sliding distance
-# A: contact area
-# N: normal force
-
-f = 5e-4 #mm/Nm, Wear Characteristic of Stellite 6 Alloy
+#Archard Constants
+k = 5e-4 #mm/Nm, Wear Characteristic of Stellite 6 Alloy
 L = 1 # sliding distance in m (length of node)
-A = math.pi * (0.02 ** 2) # contact area in m^2 (assuming a cylinder with radius 0.02 m)
-N = 15 # normal force in Newtons
+F = 15 # normal force in Newtons
+tube = SteamGenerator(lengths, nodes, diameters, velocities)
+A = tube.area()
 
-def archard_equation(f, L, A, N):
-    V = (f * L * A) / N
-    return V
+D = tube.nodes #distance of each node (sliding distance)
+H = 490 # Vickers hardness
 
-V = archard_equation(f, L, A, N)
-print("Wear volume for Stellite: {:.2e} m^3 ".format(V))
+print(D)
 
-# Stellite-6 properties
-stellite_hardness = 44 # in Rockwell C
-stellite_k = 5e-4 # wear coefficient
+print(A)
+V = archard_equation(k, L, A, F)
+print(V)
 
-# Example input values
-force = 15 # in Newtons
-distance = 0.001 # in meters
+W = archard(k, D, H, F)
+print(W)
 
-# Archard equation for wear volume
-def archard_wear_volume(force, distance, hardness, k):
-    wear_volume = (k * force * distance) / (hardness ** 2)
-    return wear_volume
+#tube = SteamGenerator(lengths, nodes, diameters, velocities)
+#sections = tube.separate_by_nodes()
+#print(sections)
 
+#tube1 = SteamGenerator(lengths, nodes, diameters, velocities)
+#section1 = tube1.diameter_squared()
+#print(section1)
 
-# Calculate wear volume
-wear_volume = archard_wear_volume(force, distance, stellite_hardness, stellite_k)
-print(f"Wear volume for Stellite-6: {wear_volume:.2e} cubic meters")
+#tube2 = SteamGenerator(lengths, nodes, diameters, velocities)
+#section2 = tube2.area()
+#print(section2)
 
 #line 305 & 312 GID
 #Fuel_Channel_Diameter = 12*1.3
 #Fuel_Channel_length = 49.5*1.3
-
 
 
 
