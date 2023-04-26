@@ -22,10 +22,18 @@ class SteamGenerator:
             sections.append(section)
         return sections
 
-    def multiply_by_value(self, value):
+    def diameter_squared(self):       
         sections = self.separate_by_nodes()
-        multiplied_sections = [[section["inlet piping length"] * value, section["inlet piping diameter"] * value, section["inlet piping velocity"] * value] for section in sections]
-        return multiplied_sections
+        d2 = [section["inlet piping diameter"] * section["inlet piping diameter"] for section in sections]
+        return d2
+    
+    def area(self, pi4):
+        section = self.diameter_squared()
+        area = []
+        multiplier = math.pi/4
+        for i in section:
+            area.append(i*multiplier)
+        return area   
 
 #from GID line 23    
 diameters = [44.3, 50, 106, 5.68, 5.68, 5.68, 5.68]
@@ -37,12 +45,16 @@ tube = SteamGenerator(lengths, nodes, diameters, velocities)
 sections = tube.separate_by_nodes()
 print(sections)
 
-sections_multiplied = tube.multiply_by_value(2)
-print(sections_multiplied)
+tube1 = SteamGenerator(lengths, nodes, diameters, velocities)
+section1 = tube1.diameter_squared()
+print(section1)
 
+tube2 = SteamGenerator(lengths, nodes, diameters, velocities)
+section2 = tube2.area(3)
+print(section2)
 
 # Constants
-HARDNESS_STELLITE = 490  # Vickers hardness number for Stellite
+HARDNESS_STELLITE = 490  # Vickers hardness number for Stellite 6 Alloy
 WEAR_COEFFICIENT = 5e-4 #mm/Nm, Wear Characteristic of Stellite 6 Alloy
 # Example usage
 pressure = 500  # MPa
