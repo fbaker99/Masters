@@ -5,15 +5,16 @@ Created on April. 24, 2023
 '''
 
 import math
-import numpy as np
 
+#class function to call properties from the PHTS including velocity, diameter, and length of each node
 class SteamGenerator:
     def __init__(self, lengths, nodes, diameters, velocities):
         self.lengths = lengths
         self.nodes = nodes
         self.diameters = diameters
         self.velocities = velocities
-    
+
+#this funcion seperates the class into nodes    
     def separate_by_nodes(self):
         sections = []
         for node in self.nodes:
@@ -23,11 +24,13 @@ class SteamGenerator:
             sections.append(section)
         return sections
 
+#this function calculates the diameter squared for each node
     def diameter_squared(self):       
         sections = self.separate_by_nodes()
         d2 = [section["inlet piping diameter"] * section["inlet piping diameter"] for section in sections]
         return d2
-    
+ 
+#this function calculates the area at each node   
     def area(self):
         section = self.diameter_squared()
         area = []
@@ -35,9 +38,22 @@ class SteamGenerator:
         for i in section:
             area.append(i*multiplier)
         return area
-    
 
-#Function that calculate sthe Archard Equation
+#Function that calculates the Archard Equation using a change in sliding dstance 
+#can use the differential and use velocity to get the wear rate
+def archard(k, D, H, F):
+    W = []
+    tube = SteamGenerator(lengths, nodes, diameters, velocities)
+    for D in tube.nodes:
+        W.append(F * k * D / H)
+    return W
+
+#Function that #Function that calculates the Archard Equation using a change in area and sliding distance
+def archard_eqn(A, D, k, F):
+    WV = [A * D * k / F for A, D in zip(A, D)]
+    return WV
+
+#Function that calculate sthe Archard Equation using a change in area and constant distance (length of node)
 def archard_equation(k, L, A, F):
     V = []
     tube = SteamGenerator(lengths, nodes, diameters, velocities)
@@ -45,13 +61,6 @@ def archard_equation(k, L, A, F):
         V.append(k * A * L / F)
     return (V)
 
-#Function that calculate sthe Archard Equation
-def archard(k, D, H, F):
-    W = []
-    tube = SteamGenerator(lengths, nodes, diameters, velocities)
-    for D in tube.nodes:
-        W.append(F * k * D / H)
-    return W
 
 #from GID line 23    
 diameters = [44.3, 50, 106, 5.68, 5.68, 5.68, 5.68]
@@ -63,20 +72,23 @@ nodes = [477.6, 281.8, 78.6, 350, 350, 350, 350]
 k = 5e-4 #mm/Nm, Wear Characteristic of Stellite 6 Alloy
 L = 1 # sliding distance in m (length of node)
 F = 15 # normal force in Newtons
-tube = SteamGenerator(lengths, nodes, diameters, velocities)
-A = tube.area()
-
-D = tube.nodes #distance of each node (sliding distance)
 H = 490 # Vickers hardness
 
+tube = SteamGenerator(lengths, nodes, diameters, velocities)
+A = tube.area()
+print(A)
+
+D = tube.nodes #distance of each node (sliding distance)
 print(D)
 
-print(A)
 V = archard_equation(k, L, A, F)
 print(V)
 
 W = archard(k, D, H, F)
 print(W)
+
+WV = archard_eqn(A, D, k, F)
+print(WV)
 
 #tube = SteamGenerator(lengths, nodes, diameters, velocities)
 #sections = tube.separate_by_nodes()
