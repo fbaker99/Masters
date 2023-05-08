@@ -5,6 +5,7 @@ Created on April. 24, 2023
 '''
 
 import math
+import matplotlib.pyplot as plot
 
 #class function to call properties from the PHTS including velocity, diameter, and length of each node
 class SteamGenerator:
@@ -40,7 +41,6 @@ class SteamGenerator:
         return area
 
 #Function that calculates the Archard Equation using a change in sliding dstance 
-#can use the differential and use velocity to get the wear rate
 def archard(k, D, H, F):
     W = []
     tube = SteamGenerator(lengths, nodes, diameters, velocities)
@@ -48,7 +48,14 @@ def archard(k, D, H, F):
         W.append(F * k * D / H)
     return W
 
-#Function that #Function that calculates the Archard Equation using a change in area and sliding distance
+def archard_rate(k, V, H, F):
+    WR = []
+    tube = SteamGenerator(lengths, nodes, diameters, velocities)
+    for V in tube.velocities:
+        WR.append(F * k * V / H)
+    return WR
+
+#Function that calculates the Archard Equation using a change in area and sliding distance
 def archard_eqn(A, D, k, F):
     WV = [A * D * k / F for A, D in zip(A, D)]
     return WV
@@ -87,6 +94,9 @@ print(V)
 W = archard(k, D, H, F)
 print(W)
 
+WR = archard_rate(k, V, H, F)
+print(WR)
+
 WV = archard_eqn(A, D, k, F)
 print(WV)
 
@@ -106,5 +116,45 @@ print(WV)
 #Fuel_Channel_Diameter = 12*1.3
 #Fuel_Channel_length = 49.5*1.3
 
+# example data
+#x = [1, 2, 3, 4, 5, 6, 7]
+#y1 = V
+#y2 = W
+#y3 = WV
+
+# plot the lists
+#plot.plot(x, y1, label='sliding distance')
+#plot.plot(x, y2, label='area')
+#plot.plot(x, y3, label='sliding distance and area')
+
+# add labels and legend
+#plot.xlabel('node #')
+#plot.ylabel('Cobalt Wear [m^3]')
+#plot.title('Cobalt Wear')
+#plot.legend()
+
+# show the plot
+#plot.show()
 
 
+# Define your lists
+# example data
+y1 = V
+y2 = W
+y3 = WR
+y4 = WV
+
+# Plot the lists with different colors
+plot.plot(y1, color='blue')
+plot.plot(y2, color='black')
+plot.plot(y3, color='red')
+plot.plot(y4, color='yellow')
+
+# Customize the plot with title, labels, and legend
+plot.title('Wear of Stellite 6')
+plot.xlabel('node #')
+plot.ylabel('wear[m^3]')
+plot.legend(['sliding distance', 'area', 'sliding distance and area'])
+
+# Show the plot
+plot.show()
